@@ -1,4 +1,5 @@
-﻿Imports ControlVehiculos.Utils
+﻿Imports System.Web.Services.Description
+Imports ControlVehiculos.Utils
 
 Public Class FormPersona
     Inherits System.Web.UI.Page
@@ -18,10 +19,14 @@ Public Class FormPersona
             persona.Nacionalidad = txtNacionalidad.Text
             persona.FechaNacimiento = txtfechaNacimiento.Text
             persona.Telefono = txtTelefono.Text
-            SwalUtils.ShowSwalMessage(Me, "Guardando", "Guardando persona...", "Gracias")
 
+            Dim mensaje = dbHelper.create(persona)
+            If mensaje.Contains("Error") Then
+                SwalUtils.ShowSwalError(Me, "Error", mensaje)
+            Else
+                SwalUtils.ShowSwal(Me, mensaje)
+            End If
 
-            lblMensaje.Text = dbHelper.create(persona)
             txtNombre.Text = ""
             txtApellido1.Text = ""
             txtApellido2.Text = ""
@@ -31,6 +36,7 @@ Public Class FormPersona
             gvPersonas.DataBind()
         Catch ex As Exception
             lblMensaje.Text = "Error al guardar la persona: " & ex.Message
+            SwalUtils.ShowSwalError(Me, "Error al guardar la persona", ex.Message)
         End Try
 
     End Sub
@@ -39,11 +45,18 @@ Public Class FormPersona
 
         Try
             Dim id As Integer = Convert.ToInt32(gvPersonas.DataKeys(e.RowIndex).Value)
-            dbHelper.delete(id)
+
+            Dim mensaje = dbHelper.delete(id)
+            If mensaje.Contains("Error") Then
+                SwalUtils.ShowSwalError(Me, "Error", mensaje)
+            Else
+                SwalUtils.ShowSwal(Me, mensaje)
+            End If
             e.Cancel = True
             gvPersonas.DataBind()
         Catch ex As Exception
             lblMensaje.Text = "Error al eliminar la persona: " & ex.Message
+            SwalUtils.ShowSwalError(Me, "Error al eliminar la persona", ex.Message)
         End Try
 
     End Sub
