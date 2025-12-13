@@ -32,6 +32,7 @@ Public Class FormPersona
             txtApellido2.Text = ""
             txtNacionalidad.Text = ""
             txtfechaNacimiento.Text = ""
+            txtTelefono.Text = ""
 
             gvPersonas.DataBind()
         Catch ex As Exception
@@ -106,14 +107,18 @@ Public Class FormPersona
     Protected Sub gvPersonas_SelectedIndexChanged(sender As Object, e As EventArgs)
 
         Dim row As GridViewRow = gvPersonas.SelectedRow()
-        Dim id As Integer = Convert.ToInt32(row.Cells(2).Text)
+        'Dim id As Integer = Convert.ToInt32(row.Cells(2).Text)
         Dim persona As Persona = New Persona()
 
         txtNombre.Text = row.Cells(3).Text
         txtApellido1.Text = row.Cells(4).Text
-        txtfechaNacimiento.Text = row.Cells(5).Text
+        txtApellido2.Text = row.Cells(5).Text
 
-        editando.Value = id
+        txtNacionalidad.Text = row.Cells(6).Text
+        txtfechaNacimiento.Text = row.Cells(7).Text
+        txtTelefono.Text = row.Cells(8).Text
+
+        'editando.Value = id
 
     End Sub
 
